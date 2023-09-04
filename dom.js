@@ -4,6 +4,13 @@ function addItem1(e){
     e.preventDefault();
     var fname=document.getElementById("fname").value;
     var lname=document.getElementById("lname").value;
-    localStorage.setItem('First Name', fname);
-    localStorage.setItem('Last Name', lname);
-}
+    
+    var user = {
+        "firstName": fname,
+        "lastName": lname
+      };
+  
+      localStorage.setItem('userDetails', JSON.stringify(user));
+      console.log("User Details Stored:", user);
+
+    }
