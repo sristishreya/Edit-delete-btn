@@ -39,9 +39,10 @@ form.addEventListener('submit', function (e) {
   // Display the stored details on the screen
   var displayDiv = document.getElementById('display-details');
   var userDiv = document.createElement('div');
-
+  userDiv.setAttribute('data-email', email);
   userDiv.innerHTML = `
     ${name} - ${email} - ${phone}
+    <button onclick="deleteUser('${email}')">Delete</button>
   `;
 
   displayDiv.appendChild(userDiv);
@@ -52,3 +53,14 @@ form.addEventListener('submit', function (e) {
   document.getElementById('email').value = '';
   document.getElementById('phone').value = '';
 });
+
+function deleteUser(email) {
+    // Remove the user details from the screen
+    var userDiv = document.querySelector(`[data-email="${email}"]`);
+    if (userDiv) {
+        userDiv.remove();
+      }
+    // Remove the user details from local storage
+    localStorage.removeItem(email);
+  }
+  
