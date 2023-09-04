@@ -42,6 +42,7 @@ form.addEventListener('submit', function (e) {
   userDiv.setAttribute('data-email', email);
   userDiv.innerHTML = `
     ${name} - ${email} - ${phone}
+    <button onclick="editUser('${email}')">Edit</button>
     <button onclick="deleteUser('${email}')">Delete</button>
   `;
 
@@ -54,6 +55,43 @@ form.addEventListener('submit', function (e) {
   document.getElementById('phone').value = '';
 });
 
+// Function to edit a user's email
+function editUser(email) {
+    // Prompt the user for a new email
+    var newEmail = prompt('Enter a new email:');
+    
+    if (newEmail !== null && newEmail !== '') {
+      // Retrieve the user details from local storage
+      var userJSON = localStorage.getItem(email);
+      var user = JSON.parse(userJSON);
+      
+      // Remove the user details from local storage
+      localStorage.removeItem(email);
+      
+      // Update the email in the user object
+      user.email = newEmail;
+      
+      // Store the updated user object in local storage with the new email as the key
+      localStorage.setItem(newEmail, JSON.stringify(user));
+      
+      // Find the user details div by data-email attribute
+      var userDiv = document.querySelector(`[data-email="${email}"]`);
+      
+      if (userDiv) {
+        // Update the data-email attribute to match the new email
+        userDiv.setAttribute('data-email', newEmail);
+        
+        // Update the displayed details with the new email
+        userDiv.innerHTML = `
+          ${user.name} - Email: ${newEmail} - ${user.phone}
+          <button onclick="editUser('${newEmail}')">Edit</button>
+          <button onclick="deleteUser('${newEmail}')">Delete</button>
+        `;
+      }
+    }
+  }
+  
+
 function deleteUser(email) {
     // Remove the user details from the screen
     var userDiv = document.querySelector(`[data-email="${email}"]`);
@@ -63,4 +101,5 @@ function deleteUser(email) {
     // Remove the user details from local storage
     localStorage.removeItem(email);
   }
+
   
